@@ -50,7 +50,7 @@
 #define RAWBUF 100 // Length of raw duration buffer
 #define USE_TIMER1 1  //should be "1" for timer 1, should be "0" for timer 2
 
-enum IRTYPES {UNKNOWN, NEC, SONY, RC5, RC6, PANASONIC_OLD, JVC, NECX, HASH_CODE, LAST_PROTOCOL=HASH_CODE};
+enum IRTYPES {UNKNOWN, NEC, LAST_PROTOCOL=NEC};
 
 const __FlashStringHelper *Pnames(IRTYPES Type); //Returns a character string that is name of protocol.
 
@@ -89,59 +89,9 @@ public:
   virtual bool decode(void);
 };
 
-class IRdecodeSony: public virtual IRdecodeBase 
-{
-public:
-  virtual bool decode(void);
-};
-
-class IRdecodeRC: public virtual IRdecodeBase 
-{
-public:
-  enum RCLevel {MARK, SPACE, ERROR};//used by decoders for RC5/RC6
-  // These are called by decode
-  RCLevel getRClevel(int *offset, int *used, int t1);
-};
-
-class IRdecodeRC5: public virtual IRdecodeRC 
-{
-public:
-  virtual bool decode(void);
-};
-
-class IRdecodeRC6: public virtual IRdecodeRC
-{
-public:
-  virtual bool decode(void);
-};
-
-class IRdecodePanasonic_Old: public virtual IRdecodeBase 
-{
-public:
-  virtual bool decode(void);
-};
-
-class IRdecodeJVC: public virtual IRdecodeBase 
-{
-public:
-  virtual bool decode(void);
-};
-
-class IRdecodeNECx: public virtual IRdecodeBase 
-{
-public:
-  virtual bool decode(void);
-};
-
 // main class for decoding all supported protocols
 class IRdecode: 
-public virtual IRdecodeNEC,
-public virtual IRdecodeSony,
-public virtual IRdecodeRC5,
-public virtual IRdecodeRC6,
-public virtual IRdecodePanasonic_Old,
-public virtual IRdecodeJVC,
-public virtual IRdecodeNECx
+public virtual IRdecodeNEC
 {
 public:
   virtual bool decode(void);    // Calls each decode routine individually
@@ -165,57 +115,8 @@ public:
   void send(unsigned long data);
 };
 
-class IRsendSony: public virtual IRsendBase
-{
-public:
-  void send(unsigned long data, int nbits);
-};
-
-class IRsendRaw: public virtual IRsendBase
-{
-public:
-  void send(unsigned int buf[], int len, int hz);
-};
-
-class IRsendRC5: public virtual IRsendBase
-{
-public:
-  void send(unsigned long data);
-};
-
-class IRsendRC6: public virtual IRsendBase
-{
-public:
-  void send(unsigned long data, int nbits);
-};
-
-class IRsendPanasonic_Old: public virtual IRsendBase
-{
-public:
-  void send(unsigned long data);
-};
-
-class IRsendJVC: public virtual IRsendBase
-{
-public:
-  void send(unsigned long data, bool First);
-};
-
-class IRsendNECx: public virtual IRsendBase
-{
-public:
-  void send(unsigned long data);
-};
-
 class IRsend: 
-public virtual IRsendNEC,
-public virtual IRsendSony,
-public virtual IRsendRaw,
-public virtual IRsendRC5,
-public virtual IRsendRC6,
-public virtual IRsendPanasonic_Old,
-public virtual IRsendJVC,
-public virtual IRsendNECx
+public virtual IRsendNEC
 {
 public:
   void send(IRTYPES Type, unsigned long data, int nbits);

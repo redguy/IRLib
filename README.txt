@@ -1,3 +1,6 @@
+This version has all protocols except for NEC ripped out to save space.
+Ripping done by Bob Koutsky <redguy@secretcult.org>
+
 IRLib – an Arduino library for infrared encoding and decoding
 Version 1.1 april 2013
 Copyright 2013 by Chris Young http://cyborg5.com
